@@ -1,11 +1,11 @@
 import React from 'react';
-import Frame from '../frame/frame';
+import FrameItem from '../frame/frame_item';
 import styles from './frame_list.module.css';
 
 const FameList = ({ frames }) => (
   <ul className={styles.frames}>
     {frames.map((frame) => (
-      <Frame key={frame} frame={frame} />
+      <FrameItem key={frame.id} frame={frame} />
     ))}
   </ul>
 );

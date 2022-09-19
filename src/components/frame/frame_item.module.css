@@ -1,0 +1,24 @@
+.container {
+  display: inline-block;
+  list-style: none;
+  margin: 1em;
+}
+
+.frame {
+  background-color: white;
+  -webkit-box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
+}
+
+.content {
+  display: block;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  background-color: beige;
+  transform: translateY(5%);
+}
+
+.title {
+  margin: 0.5em 0;
+}
