@@ -1,0 +1,40 @@
+.container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  padding: 1em;
+  align-items: center;
+  will-change: transform;
+}
+
+.container.detail {
+  transition: all 1100ms cubic-bezier(1, 0, 0.345, 0.315);
+}
+
+.container.disappear {
+  transition: transform 800ms cubic-bezier(1, 0, 0.28, 1);
+}
+
+.frame {
+  width: 90%;
+  height: 90%;
+  background-color: white;
+  -webkit-box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
+  box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
+}
+
+.content {
+  display: block;
+  width: 90%;
+  height: 90%;
+  margin: auto;
+  background-color: beige;
+  transform: translateY(5%);
+}
+
+.title {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+  height: 10%;
+}
