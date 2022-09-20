@@ -1,5 +1,6 @@
-import React, { Component, useRef } from 'react';
+import React, { Component } from 'react';
 import FrameItem from '../frame_item/frame_item';
+import styles from './gallery.module.css';
 
 class Gallery extends Component {
   static AUTO_MOVING_SPEED = 0.5;
@@ -104,7 +105,10 @@ class Gallery extends Component {
 
   render() {
     return (
-      <div ref={this.rootRef}>
+      <div
+        ref={this.rootRef}
+        className={this.isClicked ? styles.grabbing : styles.container}
+      >
         <ul>
           {this.frames.map((frame, index) => {
             return (

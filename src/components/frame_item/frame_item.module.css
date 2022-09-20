@@ -6,6 +6,7 @@
   padding: 1em;
   align-items: center;
   will-change: transform;
+  cursor: pointer;
 }
 
 .container.detail {
