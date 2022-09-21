@@ -1,45 +1,37 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import styles from './frame_item.module.css';
 
-class FrameItem extends Component {
+class FrameItem extends PureComponent {
   static RATIO_TO_HEIGHT = 0.8;
   static RATIO_TO_WIDTH = 0.6;
 
-  #left;
-  #width;
-  #height;
+  #rect;
   #speed;
+  #containerRef;
+  #frameRef;
 
   constructor(props) {
     super(props);
 
-    const horizontalInterval = 200;
-    const heightRatio = this.props.frame.isVertical ? 1.6 : 0.76;
-    this.#left = (Math.random() + this.props.index) * horizontalInterval; // prettier-ignore
-    this.#width = Math.round(Math.random() * 100) + horizontalInterval; // prettier-ignore
-    this.#height = Math.round(this.#width * heightRatio);
+    this.#rect = this.props.frame.rect;
     this.#speed = Math.random() + 1;
 
-    this.rootRef = React.createRef();
-    this.state = { posX: this.#left };
+    this.#containerRef = React.createRef();
+    this.#frameRef = React.createRef();
   }
 
   componentDidMount() {
-    const top = Math.round(
-      Math.random() * (document.documentElement.clientHeight - this.#height)
-    );
+    this.#containerRef.current.style.left = `${this.#rect.x}px`;
+    this.#containerRef.current.style.top = `${this.#rect.y}px`;
+    this.#frameRef.current.style.width = `${this.#rect.w}px`;
+    this.#frameRef.current.style.height = `${this.#rect.h}px`;
 
-    this.rootRef.current.style.left = `${this.#left}px`;
-    this.rootRef.current.style.top = `${top}px`;
-    this.rootRef.current.style.width = `${this.#width}px`;
-    this.rootRef.current.style.height = `${this.#height}px`;
-
-    this.rootRef.current.addEventListener('pointerdown', () => {
+    this.#frameRef.current.addEventListener('pointerdown', () => {
       this.props.onFrameClick(this.props.frame);
     });
   }
 
-  get className() {
+  get #className() {
     switch (this.props.displayType) {
       case 'detail':
         return `${styles.container} ${styles.detail}`;
@@ -50,48 +42,52 @@ class FrameItem extends Component {
     }
   }
 
-  get detailSizeRatio() {
-    return this.props.frame.isVertical
-      ? (document.documentElement.clientHeight * FrameItem.RATIO_TO_HEIGHT) /
-          this.#height
-      : (document.documentElement.clientWidth * FrameItem.RATIO_TO_WIDTH) /
-          this.#width;
-  }
-
-  get #frameHalfSize() {
-    return {
-      w: this.#width / (this.detailSizeRatio * 2),
-      h: this.#height / (this.detailSizeRatio * 2),
-    };
-  }
-
-  get style() {
+  get #style() {
     switch (this.props.displayType) {
       case 'detail':
         return {
           left: '50%',
           top: '50%',
           transform: `
-            scale(${this.detailSizeRatio}) 
+            scale(${this.#detailSizeRatio}) 
             translate(-${this.#frameHalfSize.w}px, -${this.#frameHalfSize.h}px)`,
         }; // prettier-ignore
       case 'disappear':
         return {
-          transform: `
-            translateX(${(this.props.posX + this.#left + this.#width) * - 1}px `,
+          transform: `translateX(${(this.props.frame.posX + this.#rect.x + this.#rect.w) * - 1}px `,
         }; // prettier-ignore
       default:
         return {
-          transform: `translateX(${this.props.posX * this.#speed}px `,
+          transform: `translateX(${this.props.frame.posX * this.#speed}px `,
         };
     }
   }
 
+  get #frameHalfSize() {
+    return {
+      w: this.#rect.w / (this.#detailSizeRatio * 2),
+      h: this.#rect.h / (this.#detailSizeRatio * 2),
+    };
+  }
+
+  get #detailSizeRatio() {
+    const isVertical = this.#rect.h / this.#rect.w > 1;
+
+    return isVertical
+      ? (document.documentElement.clientHeight * FrameItem.RATIO_TO_HEIGHT) /
+          this.#rect.h
+      : (document.documentElement.clientWidth * FrameItem.RATIO_TO_WIDTH) /
+          this.#rect.w;
+  }
+
   render() {
     return (
-      <li className={this.className} ref={this.rootRef} style={this.style}>
-        <div className={styles.frame}>
-          <div className={styles.content}></div>
+      <li
+        className={this.#className}
+        ref={this.#containerRef}
+        style={this.#style}>
+        <div className={styles.frame} ref={this.#frameRef}>
+          <img src={this.props.frame.url} className={styles.content}></img>
         </div>
         <p className={styles.title}>{this.props.frame.title}</p>
       </li>

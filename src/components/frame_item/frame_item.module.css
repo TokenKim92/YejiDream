@@ -4,9 +4,7 @@
   flex-direction: column;
   list-style: none;
   padding: 1em;
-  align-items: center;
   will-change: transform;
-  cursor: pointer;
 }
 
 .container.detail {
@@ -23,6 +21,7 @@
   background-color: white;
   -webkit-box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
 .content {

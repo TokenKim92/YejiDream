@@ -1,0 +1,249 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "ldJiv9akkbFOhjB_HM0Hsqrw1no",
+  "regionCode": "DE",
+  "pageInfo": {
+    "totalResults": 7,
+    "resultsPerPage": 7
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "XsvYJ4DLsRd2aA6pPIQmlqKbYAI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "S-vp4E1LUog"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-10T15:08:27Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "VLOG.1 런던여행",
+        "description": "Music   오늘의 일기 - https://youtu.be/NiszwdVnfc0 오늘의 일기 - https://youtu.be/tUegGgzz9_o.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/S-vp4E1LUog/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/S-vp4E1LUog/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/S-vp4E1LUog/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-10T15:08:27Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "xucQONkXrgWNSOaHf9-Rx-8Ztl0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "OXobV9ChELY"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-20T13:26:04Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "VLOG.2 독일댁",
+        "description": "Music   오늘의 일기 - https://youtu.be/a1AUbm1NVUA 오늘의 일기 - https://youtu.be/vLVQ1nEEZPc.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/OXobV9ChELY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/OXobV9ChELY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/OXobV9ChELY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-20T13:26:04Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "0N4973Ngva8Q5D2lqiv5jUSWAp0",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "yvB1psGod3Y"
+      },
+      "snippet": {
+        "publishedAt": "2022-08-08T20:39:37Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "VLOG.3 한국방문",
+        "description": "Music   오늘의 일기 - https://youtu.be/vLVQ1nEEZPc.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/yvB1psGod3Y/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/yvB1psGod3Y/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/yvB1psGod3Y/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-08-08T20:39:37Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "nYhZLLwPqpDg_D4OpnzDND44IdM",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Kg7H8DfmitM"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-21T12:33:34Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "VLOG.2021, 신혼 브이로그(?)",
+        "description": "작년에 만들어놨던 영상을 다시 올려봅니다 과거브이로그이자.. 신혼브이로그   .....          ㅋㅋㅋㅋㅋㅋ.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Kg7H8DfmitM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Kg7H8DfmitM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Kg7H8DfmitM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-21T12:33:34Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "cbwo5yawCa2fahtfe9kXRqlwCNI",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "iWxIsaoWUaQ"
+      },
+      "snippet": {
+        "publishedAt": "2022-09-16T18:27:30Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "쉬다 가세요",
+        "description": "Music 장들레-모르겠어요.inst [엡5:1-2] 그러므로 사랑을 받는 자녀 같이 너희는 하나님을 본받는 자가 되고 그리스도께서 너희를 ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/iWxIsaoWUaQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/iWxIsaoWUaQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/iWxIsaoWUaQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-09-16T18:27:30Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "KXQC34VIfIMWFMuYzMcgCD1j_Kw",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "6xspdWAGTa0"
+      },
+      "snippet": {
+        "publishedAt": "2019-03-30T21:31:32Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "Leben in Deutschland +100 🇩🇪",
+        "description": "나는 지금 하나님이 만드신 만물 아래 살고 있다 ✨❤️ Music   권순관 - 긴 여행을 떠나요.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/6xspdWAGTa0/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/6xspdWAGTa0/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/6xspdWAGTa0/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2019-03-30T21:31:32Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "uI6ZA8kSvJXxWPAMeyPoshTp7kQ",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "74su8s7RkzM"
+      },
+      "snippet": {
+        "publishedAt": "2022-06-21T13:55:50Z",
+        "channelId": "UC17Gv3y4OAe0Crgr0lr-wQg",
+        "title": "[여행로그] 첫번째 이야기_Swansea, London🇬🇧",
+        "description": "Swansea, London.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/74su8s7RkzM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/74su8s7RkzM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/74su8s7RkzM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "예디드림",
+        "liveBroadcastContent": "none",
+        "publishTime": "2022-06-21T13:55:50Z"
+      }
+    }
+  ]
+}
