@@ -7,7 +7,9 @@ class Gallery extends Component {
   static MANUAL_MOVING_SPEED = 5;
   static FRAME = 60;
   static FRAME_TIME = Math.floor(1000 / Gallery.FRAME);
-  static HORIZONTAL_INTERVAL = 150;
+  static HORIZONTAL_INTERVAL = 200;
+  static RIGHT = 1;
+  static LEFT = -1;
 
   #isClicked;
   #clickedPosX;
@@ -55,6 +57,7 @@ class Gallery extends Component {
         url: item.snippet.thumbnails.high.url,
         rect: rect,
         posX: rect.x,
+        acceleration: Math.random() + 1,
       };
     });
   }
@@ -88,16 +91,25 @@ class Gallery extends Component {
 
   #moveFrame = (event) => {
     if (this.#isClicked) {
-      const movingDirection = event.clientX - this.#clickedPosX > 0 ? 1 : -1;
+      const movingDirection =
+        event.clientX - this.#clickedPosX > 0 ? Gallery.RIGHT : Gallery.LEFT;
       this.#clickedPosX = event.clientX;
-      this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
-      this.#stopMoveFrameTimer || this.#setMoveFrameTimer();
+
+      if (this.#isMoving) {
+        this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
+        return;
+      }
+
+      if (movingDirection === Gallery.RIGHT) {
+        this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
+        this.#setMoveFrameTimer();
+      }
     }
   };
 
   #setMoveFrameTimer = () => {
     const interval = setInterval(() => {
-      this.#updateFrames(Gallery.AUTO_MOVING_SPEED);
+      this.#updateFrames(-Gallery.AUTO_MOVING_SPEED);
     }, Gallery.FRAME_TIME);
 
     this.#stopMoveFrameTimer = () => clearInterval(interval);
@@ -105,29 +117,34 @@ class Gallery extends Component {
 
   #updateFrames(velocity) {
     const frames = this.state.frames.map((frame, index) => {
-      const newPosX = frame.posX + velocity; //prettier-ignore
+      frame.posX += Math.round(velocity * frame.acceleration);
+      const offset = -1.3;
       const boundary = {
-        left: frame.rect.x,
+        left: (frame.rect.x + frame.rect.w) * offset,
         right: this.#stageSize.w - frame.rect.x,
       };
 
-      if (!index && newPosX > boundary.right) {
+      if (this.state.frames.length - 1 === index && frame.posX < boundary.right) {
         this.#stopMoveFrameTimer && this.#stopMoveFrameTimer();
         this.#stopMoveFrameTimer = undefined;
+      } // prettier-ignore
+
+      const isInBoundary = boundary.left < frame.posX && frame.posX < boundary.right; // prettier-ignore
+      if (isInBoundary) {
+        return { ...frame };
       }
 
-      if (/*boundary.left < newPosX &&*/ newPosX < boundary.right) {
-        return { ...frame, posX: newPosX };
-      }
-
-      frame.posX = newPosX;
       return frame;
     });
 
     this.setState({ ...this.state, frames });
   }
 
-  #getDisplayType(frame) {
+  get #isMoving() {
+    return this.#stopMoveFrameTimer !== undefined;
+  }
+
+  getDisplayType(frame) {
     if (!this.state.selectedFrame) {
       return 'list';
     }
@@ -157,7 +174,7 @@ class Gallery extends Component {
                 key={frame.id}
                 frame={frame}
                 onFrameClick={this.selectFrame}
-                displayType={this.#getDisplayType(frame)}
+                displayType={this.getDisplayType(frame)}
               />
             );
           })}

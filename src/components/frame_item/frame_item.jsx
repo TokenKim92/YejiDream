@@ -2,11 +2,10 @@ import React, { PureComponent } from 'react';
 import styles from './frame_item.module.css';
 
 class FrameItem extends PureComponent {
-  static RATIO_TO_HEIGHT = 0.8;
-  static RATIO_TO_WIDTH = 0.6;
+  static RATIO_TO_HEIGHT = 0.7;
+  static RATIO_TO_WIDTH = 0.5;
 
   #rect;
-  #speed;
   #containerRef;
   #frameRef;
 
@@ -14,7 +13,6 @@ class FrameItem extends PureComponent {
     super(props);
 
     this.#rect = this.props.frame.rect;
-    this.#speed = Math.random() + 1;
 
     this.#containerRef = React.createRef();
     this.#frameRef = React.createRef();
@@ -58,7 +56,7 @@ class FrameItem extends PureComponent {
         }; // prettier-ignore
       default:
         return {
-          transform: `translateX(${this.props.frame.posX * this.#speed}px `,
+          transform: `translateX(${this.props.frame.posX}px `,
         };
     }
   }
