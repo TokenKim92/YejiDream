@@ -7,7 +7,6 @@ class Gallery extends Component {
   static MANUAL_MOVING_SPEED = 5;
   static FRAME = 60;
   static FRAME_TIME = Math.floor(1000 / Gallery.FRAME);
-  static HORIZONTAL_INTERVAL = 200;
   static RIGHT = 1;
   static LEFT = -1;
 
@@ -56,29 +55,41 @@ class Gallery extends Component {
         title: item.snippet.title,
         url: item.snippet.thumbnails.high.url,
         rect: rect,
-        posX: rect.x,
         acceleration: Math.random() + 1,
       };
     });
   }
 
   #calculateRect(aspectRatio, index) {
-    const width = Math.round(Math.random() * 100) + Gallery.HORIZONTAL_INTERVAL;
+    const minWidth = 200;
+    const width = Math.round(Math.random() * 200) + minWidth;
     const height = Math.round(width * aspectRatio);
+    const horizontalInterval = 300;
 
     return {
       w: width,
       h: height,
-      x: Math.round((Math.random() + index) * Gallery.HORIZONTAL_INTERVAL),
+      x: Math.round((Math.random() + index) * horizontalInterval),
       y: Math.round(Math.random() * (this.#stageSize.h - height)),
     };
   }
 
   #setClickedState = (event) => {
-    if (!this.#isClicked) {
-      this.rootRef.current.setPointerCapture(event.pointerId);
-      this.#isClicked = true;
-      this.#clickedPosX = event.clientX;
+    if (this.#isClicked) {
+      return;
+    }
+
+    this.rootRef.current.setPointerCapture(event.pointerId);
+    this.#isClicked = true;
+    this.#clickedPosX = event.clientX;
+
+    if (this.state.selectedFrame) {
+      const state = {
+        ...this.state,
+        selectedFrame: null,
+      };
+      this.setState(state);
+      this.#setMoveFrameTimer();
     }
   };
 
@@ -90,20 +101,22 @@ class Gallery extends Component {
   };
 
   #moveFrame = (event) => {
-    if (this.#isClicked) {
-      const movingDirection =
-        event.clientX - this.#clickedPosX > 0 ? Gallery.RIGHT : Gallery.LEFT;
-      this.#clickedPosX = event.clientX;
+    if (!this.#isClicked || this.state.selectedFrame) {
+      return;
+    }
 
-      if (this.#isMoving) {
-        this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
-        return;
-      }
+    const movingDirection =
+      event.clientX - this.#clickedPosX > 0 ? Gallery.RIGHT : Gallery.LEFT;
+    this.#clickedPosX = event.clientX;
 
-      if (movingDirection === Gallery.RIGHT) {
-        this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
-        this.#setMoveFrameTimer();
-      }
+    if (this.#isMoving) {
+      this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
+      return;
+    }
+
+    if (movingDirection === Gallery.RIGHT) {
+      this.#updateFrames(Gallery.MANUAL_MOVING_SPEED * movingDirection);
+      this.#setMoveFrameTimer();
     }
   };
 
@@ -117,19 +130,15 @@ class Gallery extends Component {
 
   #updateFrames(velocity) {
     const frames = this.state.frames.map((frame, index) => {
-      frame.posX += Math.round(velocity * frame.acceleration);
-      const offset = -1.3;
-      const boundary = {
-        left: (frame.rect.x + frame.rect.w) * offset,
-        right: this.#stageSize.w - frame.rect.x,
-      };
+      frame.rect.x += Math.round(velocity * frame.acceleration);
 
-      if (this.state.frames.length - 1 === index && frame.posX < boundary.right) {
-        this.#stopMoveFrameTimer && this.#stopMoveFrameTimer();
+      const boundary = this.#getBoundary(frame);
+      if (this.state.frames.length - 1 === index && frame.rect.x < boundary.right) {
+        this.#isMoving && this.#stopMoveFrameTimer();
         this.#stopMoveFrameTimer = undefined;
       } // prettier-ignore
 
-      const isInBoundary = boundary.left < frame.posX && frame.posX < boundary.right; // prettier-ignore
+      const isInBoundary = boundary.left < frame.rect.x && frame.rect.x < boundary.right; // prettier-ignore
       if (isInBoundary) {
         return { ...frame };
       }
@@ -144,12 +153,30 @@ class Gallery extends Component {
     return this.#stopMoveFrameTimer !== undefined;
   }
 
+  #getBoundary(frame) {
+    const offset = -1.3;
+    return {
+      left: frame.rect.w * offset,
+      right: this.#stageSize.w,
+    };
+  }
+
   getDisplayType(frame) {
     if (!this.state.selectedFrame) {
-      return 'list';
+      return 'default';
     }
 
-    return this.state.selectedFrame === frame ? 'detail' : 'disappear';
+    if (this.state.selectedFrame === frame) {
+      return 'detail';
+    }
+
+    const boundary = this.#getBoundary(frame);
+    const isInBoundary =
+      boundary.left < frame.rect.x && frame.rect.x < boundary.right;
+
+    if (isInBoundary) {
+      return 'disappear';
+    }
   }
 
   selectFrame = (frame) => {
@@ -159,7 +186,7 @@ class Gallery extends Component {
     };
     this.setState(state);
 
-    this.#stopMoveFrameTimer();
+    this.#isMoving && this.#stopMoveFrameTimer();
   };
 
   render() {

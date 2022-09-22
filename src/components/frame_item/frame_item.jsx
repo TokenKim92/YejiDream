@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import styles from './frame_item.module.css';
 
 class FrameItem extends PureComponent {
-  static RATIO_TO_HEIGHT = 0.7;
-  static RATIO_TO_WIDTH = 0.5;
+  static RATIO_TO_HEIGHT = 0.8;
+  static RATIO_TO_WIDTH = 0.6;
 
   #rect;
   #containerRef;
@@ -13,19 +13,18 @@ class FrameItem extends PureComponent {
     super(props);
 
     this.#rect = this.props.frame.rect;
-
     this.#containerRef = React.createRef();
     this.#frameRef = React.createRef();
   }
 
   componentDidMount() {
-    this.#containerRef.current.style.left = `${this.#rect.x}px`;
     this.#containerRef.current.style.top = `${this.#rect.y}px`;
-    this.#frameRef.current.style.width = `${this.#rect.w}px`;
-    this.#frameRef.current.style.height = `${this.#rect.h}px`;
+    this.#containerRef.current.style.width = `${this.#rect.w}px`;
+    this.#containerRef.current.style.height = `${this.#rect.h}px`;
 
-    this.#frameRef.current.addEventListener('pointerdown', () => {
+    this.#frameRef.current.addEventListener('pointerdown', (event) => {
       this.props.onFrameClick(this.props.frame);
+      event.stopPropagation();
     });
   }
 
@@ -44,38 +43,36 @@ class FrameItem extends PureComponent {
     switch (this.props.displayType) {
       case 'detail':
         return {
-          left: '50%',
-          top: '50%',
           transform: `
-            scale(${this.#detailSizeRatio}) 
-            translate(-${this.#frameHalfSize.w}px, -${this.#frameHalfSize.h}px)`,
+            scale(${this.#detailSizeRatio})   
+            translate(${this.#centerPosition.x}px, ${this.#centerPosition.y}px)`,
         }; // prettier-ignore
       case 'disappear':
-        return {
-          transform: `translateX(${(this.props.frame.posX + this.#rect.x + this.#rect.w) * - 1}px `,
-        }; // prettier-ignore
+        const offset = -1.2;
+        return { transform: `translateX(${this.#rect.w * offset}px ` };
       default:
-        return {
-          transform: `translateX(${this.props.frame.posX}px `,
-        };
+        return { transform: `translateX(${this.#rect.x}px ` };
     }
   }
 
-  get #frameHalfSize() {
+  get #centerPosition() {
+    const detailSizeDoubleRatio = 2 * this.#detailSizeRatio;
     return {
-      w: this.#rect.w / (this.#detailSizeRatio * 2),
-      h: this.#rect.h / (this.#detailSizeRatio * 2),
-    };
+      x: Math.round(
+        (document.documentElement.clientWidth - this.#rect.w) / detailSizeDoubleRatio
+      ),
+      y: Math.round(
+        (document.documentElement.clientHeight - this.#rect.y * 2 - this.#rect.h) / detailSizeDoubleRatio
+      ),
+    }; // prettier-ignore
   }
 
   get #detailSizeRatio() {
     const isVertical = this.#rect.h / this.#rect.w > 1;
 
     return isVertical
-      ? (document.documentElement.clientHeight * FrameItem.RATIO_TO_HEIGHT) /
-          this.#rect.h
-      : (document.documentElement.clientWidth * FrameItem.RATIO_TO_WIDTH) /
-          this.#rect.w;
+      ? (document.documentElement.clientHeight * FrameItem.RATIO_TO_HEIGHT) / this.#rect.h
+      : (document.documentElement.clientWidth * FrameItem.RATIO_TO_WIDTH) / this.#rect.w; // prettier-ignore
   }
 
   render() {
