@@ -64,8 +64,8 @@ class Gallery extends Component {
   }
 
   #calculateRect(aspectRatio, index) {
-    const minWidth = 200;
-    const width = Math.round(Math.random() * 200) + minWidth;
+    const minWidth = this.#stageSize.w / 6;
+    const width = Math.round((Math.random() * minWidth) / 2) + minWidth;
     const height = Math.round(width * aspectRatio);
     const horizontalInterval = 300;
     const basicPosX = this.#stageSize.w / 2;
@@ -171,11 +171,16 @@ class Gallery extends Component {
         return 'default';
       }
 
+      this.rootRef.current.removeEventListener('mousemove', this.#moveFrame);
+
       const lastFrame = this.state.frames[this.state.frames.length - 1];
       if (lastFrame === frame) {
         this.#toBeReappear = false;
         // this time should be same the 'transition' of .container.appear in frame_item.module.css.
-        setTimeout(() => this.#setMoveFrameTimer(), 800);
+        setTimeout(() => {
+          this.#setMoveFrameTimer();
+          this.rootRef.current.addEventListener('mousemove', this.#moveFrame);
+        }, 800);
       }
 
       return 'reappear';
@@ -206,7 +211,11 @@ class Gallery extends Component {
     return (
       <div
         ref={this.rootRef}
-        className={this.#isClicked ? styles.grabbing : styles.container}>
+        className={
+          this.#isClicked
+            ? `${styles.container} ${styles.grabbing}`
+            : styles.container
+        }>
         <ul>
           {this.state.frames.map((frame) => {
             return (

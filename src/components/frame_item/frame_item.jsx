@@ -36,7 +36,7 @@ class FrameItem extends PureComponent {
       case 'reappear':
         return `${styles.container} ${styles.appear}`;
       default:
-        return `${styles.container}`;
+        return `${styles.container} ${styles.default}`;
     }
   }
 
