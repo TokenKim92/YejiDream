@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FrameItem from '../frame_item/frame_item';
-//import FrameList from '../frame_list/frame_list';
+import ProgressSheep from '../progress_sheep/progress_sheep';
 import styles from './gallery.module.css';
 
 class Gallery extends Component {
@@ -223,14 +223,14 @@ class Gallery extends Component {
       : styles.container;
   }
 
-  get #iconStyle() {
+  get #progressPosX() {
     const posOffset =
       -this.#stageSize.w + this.#lastFrameRect.w * this.#frameOffset;
     const posX =
       ((this.#lastFrameRect.x + posOffset) * this.#stageSize.w) /
       (this.#orgLastFramePosX + posOffset);
 
-    return { transform: `translateX(${posX}px) ` };
+    return posX;
   }
 
   render() {
@@ -239,11 +239,6 @@ class Gallery extends Component {
         <p className={styles.title}>
           Yeji <br /> Dream
         </p>
-        {/* <FrameList
-          frames={this.state.frames}
-          onFrameClick={this.selectFrame}
-          getDisplayType={this.getDisplayType}
-        /> */}
         <ul>
           {this.state.frames.map((frame) => {
             return (
@@ -256,9 +251,9 @@ class Gallery extends Component {
             );
           })}
         </ul>
-        <i
-          className={`fa-solid fa-hippo ${styles.icon}`}
-          style={this.#iconStyle}
+        <ProgressSheep
+          posX={this.#progressPosX}
+          toBeDisappear={!!this.state.selectedFrame}
         />
       </div>
     );

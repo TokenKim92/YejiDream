@@ -1,0 +1,9 @@
+.container {
+  position: absolute;
+  bottom: 5px;
+  transition: opacity 300ms ease;
+}
+
+.container.disappear {
+  opacity: 0;
+}
