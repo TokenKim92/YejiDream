@@ -1,8 +1,15 @@
 .container {
-  background-color: #eeeeee;
+  background-color: #efefef;
   cursor: grab;
 }
 
 .container.grabbing {
   cursor: grabbing;
+}
+
+.title {
+  font-family: 'Dangrek', cursive;
+  padding: 1rem 3rem;
+  font-size: 1.5rem;
+  color: #868686;
 }

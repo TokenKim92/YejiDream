@@ -4,7 +4,7 @@ import styles from './gallery.module.css';
 
 class Gallery extends Component {
   static AUTO_MOVING_SPEED = 0.5;
-  static MANUAL_MOVING_SPEED = 5;
+  static MANUAL_MOVING_SPEED = 7;
   static FRAME = 60;
   static FRAME_TIME = Math.floor(1000 / Gallery.FRAME);
   static RIGHT = 1;
@@ -64,8 +64,8 @@ class Gallery extends Component {
   }
 
   #calculateRect(aspectRatio, index) {
-    const minWidth = this.#stageSize.w / 6;
-    const width = Math.round((Math.random() * minWidth) / 2) + minWidth;
+    const minWidth = this.#stageSize.w / 7;
+    const width = Math.round(Math.random() * minWidth * 0.7) + minWidth;
     const height = Math.round(width * aspectRatio);
     const horizontalInterval = 300;
     const basicPosX = this.#stageSize.w / 2;
@@ -74,7 +74,9 @@ class Gallery extends Component {
       w: width,
       h: height,
       x: Math.round((Math.random() + index) * horizontalInterval) + basicPosX,
-      y: Math.round(Math.random() * (this.#stageSize.h - height)),
+      y: Math.round(
+        ((Math.random() + (index % 2)) * (this.#stageSize.h - height)) / 2
+      ),
     };
   }
 
@@ -216,6 +218,9 @@ class Gallery extends Component {
             ? `${styles.container} ${styles.grabbing}`
             : styles.container
         }>
+        <p className={styles.title}>
+          Yeji <br /> Dream
+        </p>
         <ul>
           {this.state.frames.map((frame) => {
             return (
