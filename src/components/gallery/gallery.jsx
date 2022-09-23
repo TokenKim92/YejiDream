@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import FrameItem from '../frame_item/frame_item';
+//import FrameList from '../frame_list/frame_list';
 import styles from './gallery.module.css';
 
 class Gallery extends Component {
@@ -16,6 +17,8 @@ class Gallery extends Component {
   #stageSize;
   #stopMoveFrameTimer;
   #toBeReappear = false;
+  #lastFrameRect;
+  #orgLastFramePosX;
 
   constructor(props) {
     super(props);
@@ -33,6 +36,9 @@ class Gallery extends Component {
       frames: this.#initFrames(),
       selectedFrame: undefined,
     };
+
+    this.#lastFrameRect = this.state.frames[this.state.frames.length - 1].rect;
+    this.#orgLastFramePosX = this.#lastFrameRect.x;
   }
 
   componentDidMount() {
@@ -69,13 +75,15 @@ class Gallery extends Component {
     const height = Math.round(width * aspectRatio);
     const horizontalInterval = 300;
     const basicPosX = this.#stageSize.w / 2;
+    const divider = 3;
 
     return {
       w: width,
       h: height,
       x: Math.round((Math.random() + index) * horizontalInterval) + basicPosX,
       y: Math.round(
-        ((Math.random() + (index % 2)) * (this.#stageSize.h - height)) / 2
+        ((Math.random() + (index % divider)) * (this.#stageSize.h - height)) /
+          divider
       ),
     };
   }
@@ -209,18 +217,33 @@ class Gallery extends Component {
     this.#isMoving && this.#stopMoveFrameTimer();
   };
 
+  get #containerClassName() {
+    return this.#isClicked
+      ? `${styles.container} ${styles.grabbing}`
+      : styles.container;
+  }
+
+  get #iconStyle() {
+    const posOffset =
+      -this.#stageSize.w + this.#lastFrameRect.w * this.#frameOffset;
+    const posX =
+      ((this.#lastFrameRect.x + posOffset) * this.#stageSize.w) /
+      (this.#orgLastFramePosX + posOffset);
+
+    return { transform: `translateX(${posX}px) ` };
+  }
+
   render() {
     return (
-      <div
-        ref={this.rootRef}
-        className={
-          this.#isClicked
-            ? `${styles.container} ${styles.grabbing}`
-            : styles.container
-        }>
+      <div ref={this.rootRef} className={this.#containerClassName}>
         <p className={styles.title}>
           Yeji <br /> Dream
         </p>
+        {/* <FrameList
+          frames={this.state.frames}
+          onFrameClick={this.selectFrame}
+          getDisplayType={this.getDisplayType}
+        /> */}
         <ul>
           {this.state.frames.map((frame) => {
             return (
@@ -233,6 +256,10 @@ class Gallery extends Component {
             );
           })}
         </ul>
+        <i
+          className={`fa-solid fa-hippo ${styles.icon}`}
+          style={this.#iconStyle}
+        />
       </div>
     );
   }
