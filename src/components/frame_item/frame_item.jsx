@@ -33,7 +33,8 @@ class FrameItem extends PureComponent {
       case 'detail':
         return `${styles.container} ${styles.detail}`;
       case 'disappear':
-        return `${styles.container} ${styles.disappear}`;
+      case 'reappear':
+        return `${styles.container} ${styles.appear}`;
       default:
         return `${styles.container}`;
     }
@@ -48,8 +49,9 @@ class FrameItem extends PureComponent {
             translate(${this.#centerPosition.x}px, ${this.#centerPosition.y}px)`,
         }; // prettier-ignore
       case 'disappear':
-        const offset = -1.2;
+        const offset = -1.3;
         return { transform: `translateX(${this.#rect.w * offset}px ` };
+      case 'appear':
       default:
         return { transform: `translateX(${this.#rect.x}px ` };
     }

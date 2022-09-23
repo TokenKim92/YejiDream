@@ -15,6 +15,7 @@ class Gallery extends Component {
   #clickedPosX;
   #stageSize;
   #stopMoveFrameTimer;
+  #toBeReappear = false;
 
   constructor(props) {
     super(props);
@@ -67,11 +68,12 @@ class Gallery extends Component {
     const width = Math.round(Math.random() * 200) + minWidth;
     const height = Math.round(width * aspectRatio);
     const horizontalInterval = 300;
+    const basicPosX = this.#stageSize.w / 2;
 
     return {
       w: width,
       h: height,
-      x: Math.round((Math.random() + index) * horizontalInterval),
+      x: Math.round((Math.random() + index) * horizontalInterval) + basicPosX,
       y: Math.round(Math.random() * (this.#stageSize.h - height)),
     };
   }
@@ -91,7 +93,8 @@ class Gallery extends Component {
         selectedFrame: null,
       };
       this.setState(state);
-      this.#setMoveFrameTimer();
+
+      this.#toBeReappear = true;
     }
   };
 
@@ -164,7 +167,18 @@ class Gallery extends Component {
 
   getDisplayType(frame) {
     if (!this.state.selectedFrame) {
-      return 'default';
+      if (!this.#toBeReappear) {
+        return 'default';
+      }
+
+      const lastFrame = this.state.frames[this.state.frames.length - 1];
+      if (lastFrame === frame) {
+        this.#toBeReappear = false;
+        // this time should be same the 'transition' of .container.appear in frame_item.module.css.
+        setTimeout(() => this.#setMoveFrameTimer(), 800);
+      }
+
+      return 'reappear';
     }
 
     if (this.state.selectedFrame === frame) {
