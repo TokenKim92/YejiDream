@@ -10,6 +10,7 @@ class Gallery extends Component {
   static RIGHT = 1;
   static LEFT = -1;
 
+  #frameOffset;
   #isClicked;
   #clickedPosX;
   #stageSize;
@@ -19,6 +20,7 @@ class Gallery extends Component {
     super(props);
     this.rootRef = React.createRef();
 
+    this.#frameOffset = 1.3;
     this.#isClicked = false;
     this.#clickedPosX = 0;
     this.#stageSize = {
@@ -130,16 +132,15 @@ class Gallery extends Component {
 
   #updateFrames(velocity) {
     const frames = this.state.frames.map((frame, index) => {
-      frame.rect.x += Math.round(velocity * frame.acceleration);
+      const frameRect = frame.rect;
+      frameRect.x += Math.round(velocity * frame.acceleration);
 
-      const boundary = this.#getBoundary(frame);
-      if (this.state.frames.length - 1 === index && frame.rect.x < boundary.right) {
-        this.#isMoving && this.#stopMoveFrameTimer();
-        this.#stopMoveFrameTimer = undefined;
-      } // prettier-ignore
+      const isLastFrame = this.state.frames.length - 1 === index;
+      isLastFrame && this.#onLastFrameShowed(frameRect);
 
-      const isInBoundary = boundary.left < frame.rect.x && frame.rect.x < boundary.right; // prettier-ignore
-      if (isInBoundary) {
+      const offset = this.#frameOffset * Gallery.LEFT;
+      const isInStage = frameRect.w * offset < frameRect.x && frameRect.x < this.#stageSize.w; // prettier-ignore
+      if (isInStage) {
         return { ...frame };
       }
 
@@ -149,16 +150,16 @@ class Gallery extends Component {
     this.setState({ ...this.state, frames });
   }
 
-  get #isMoving() {
-    return this.#stopMoveFrameTimer !== undefined;
+  #onLastFrameShowed(frameRect) {
+    const isCameIntoStage = frameRect.x < this.#stageSize.w - frameRect.w * this.#frameOffset; // prettier-ignore
+    if (isCameIntoStage) {
+      this.#isMoving && this.#stopMoveFrameTimer();
+      this.#stopMoveFrameTimer = undefined;
+    }
   }
 
-  #getBoundary(frame) {
-    const offset = -1.3;
-    return {
-      left: frame.rect.w * offset,
-      right: this.#stageSize.w,
-    };
+  get #isMoving() {
+    return this.#stopMoveFrameTimer !== undefined;
   }
 
   getDisplayType(frame) {
@@ -170,11 +171,9 @@ class Gallery extends Component {
       return 'detail';
     }
 
-    const boundary = this.#getBoundary(frame);
-    const isInBoundary =
-      boundary.left < frame.rect.x && frame.rect.x < boundary.right;
-
-    if (isInBoundary) {
+    const offset = this.#frameOffset * Gallery.LEFT;
+    const isInStage = frame.rect.w * offset < frame.rect.x && frame.rect.x < this.#stageSize.w; // prettier-ignore
+    if (isInStage) {
       return 'disappear';
     }
   }
