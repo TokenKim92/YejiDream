@@ -2,8 +2,8 @@ import React, { PureComponent } from 'react';
 import styles from './frame_item.module.css';
 
 class FrameItem extends PureComponent {
-  static RATIO_TO_HEIGHT = 0.8;
-  static RATIO_TO_WIDTH = 0.6;
+  static RATIO_TO_HEIGHT = 0.7;
+  static RATIO_TO_WIDTH = 0.5;
 
   #rect;
   #containerRef;
@@ -44,28 +44,30 @@ class FrameItem extends PureComponent {
     switch (this.props.displayType) {
       case 'detail':
         return {
-          transform: `
-            scale(${this.#detailSizeRatio})   
-            translate(${this.#centerPosition.x}px, ${this.#centerPosition.y}px)`,
+          width: `${this.#rect.w * this.#detailSizeRatio}px`,
+          height: `${this.#rect.h * this.#detailSizeRatio}px`,
+          transform: `translate(${this.#centerPosition.x}px, ${this.#centerPosition.y}px)`,
         }; // prettier-ignore
       case 'disappear':
         const offset = -1.3;
         return { transform: `translateX(${this.#rect.w * offset}px ` };
-      case 'appear':
+      case 'reappear':
+        return {
+          transform: `translateX(${this.#rect.x}px `,
+        };
       default:
         return { transform: `translateX(${this.#rect.x}px ` };
     }
   }
 
   get #centerPosition() {
-    const detailSizeDoubleRatio = 2 * this.#detailSizeRatio;
     return {
       x: Math.round(
-        (document.documentElement.clientWidth - this.#rect.w) / detailSizeDoubleRatio
+        (document.documentElement.clientWidth - this.#rect.w * this.#detailSizeRatio) / 2
       ),
       y: Math.round(
-        (document.documentElement.clientHeight - this.#rect.y * 2 - this.#rect.h) / detailSizeDoubleRatio
-      ),
+        (document.documentElement.clientHeight - this.#rect.h * this.#detailSizeRatio) / 2 - this.#rect.y
+      )
     }; // prettier-ignore
   }
 
@@ -84,7 +86,20 @@ class FrameItem extends PureComponent {
         ref={this.#containerRef}
         style={this.#style}>
         <div className={styles.frame} ref={this.#frameRef}>
-          <img src={this.props.frame.url} className={styles.content}></img>
+          {this.props.displayType === 'detail' ? (
+            // <iframe
+            //   className={styles.iframe}
+            //   type='text/html'
+            //   width='100%'
+            //   height='100%'
+            //   src={`https://www.youtube.com/embed/${this.props.frame.id}?autoplay=1&loop=1`}
+            //   frameBorder='0'
+            //   allowFullScreen
+            // />
+            <div />
+          ) : (
+            <img src={this.props.frame.url} className={styles.content}></img>
+          )}
         </div>
         <p className={styles.title}>{this.props.frame.title}</p>
       </li>
