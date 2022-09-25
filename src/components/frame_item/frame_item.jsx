@@ -15,16 +15,23 @@ class FrameItem extends PureComponent {
     this.#rect = this.props.frame.rect;
     this.#containerRef = React.createRef();
     this.#frameRef = React.createRef();
+
+    this.state = {
+      toBeShowVideo: false,
+    };
   }
 
   componentDidMount() {
     this.#containerRef.current.style.top = `${this.#rect.y}px`;
-    this.#containerRef.current.style.width = `${this.#rect.w}px`;
-    this.#containerRef.current.style.height = `${this.#rect.h}px`;
 
     this.#frameRef.current.addEventListener('pointerdown', (event) => {
       this.props.onFrameClick(this.props.frame);
       event.stopPropagation();
+
+      setTimeout(() => {
+        const toBeShowVideo = true;
+        this.setState({ toBeShowVideo });
+      }, 1200);
     });
   }
 
@@ -50,13 +57,18 @@ class FrameItem extends PureComponent {
         }; // prettier-ignore
       case 'disappear':
         const offset = -1.3;
-        return { transform: `translateX(${this.#rect.w * offset}px ` };
-      case 'reappear':
         return {
+          width: `${this.#rect.w}px`,
+          height: `${this.#rect.h}px`,
+          transform: `translateX(${this.#rect.w * offset}px `,
+        };
+      case 'reappear':
+      default:
+        return {
+          width: `${this.#rect.w}px`,
+          height: `${this.#rect.h}px`,
           transform: `translateX(${this.#rect.x}px `,
         };
-      default:
-        return { transform: `translateX(${this.#rect.x}px ` };
     }
   }
 
@@ -86,20 +98,20 @@ class FrameItem extends PureComponent {
         ref={this.#containerRef}
         style={this.#style}>
         <div className={styles.frame} ref={this.#frameRef}>
-          {this.props.displayType === 'detail' ? (
-            // <iframe
-            //   className={styles.iframe}
-            //   type='text/html'
-            //   width='100%'
-            //   height='100%'
-            //   src={`https://www.youtube.com/embed/${this.props.frame.id}?autoplay=1&loop=1`}
-            //   frameBorder='0'
-            //   allowFullScreen
-            // />
-            <div />
+          <img src={this.props.frame.url} className={styles.content} />
+          {this.props.displayType !== 'detail' ? (
+            <></>
           ) : (
-            <img src={this.props.frame.url} className={styles.content}></img>
+            <iframe
+              className={styles.iframe}
+              style={{ opacity: this.state.toBeShowVideo ? 1 : 0 }}
+              type='text/html'
+              src={`https://www.youtube.com/embed/${this.props.frame.id}?autoplay=1&loop=1`}
+              frameBorder='0'
+              allowFullScreen
+            />
           )}
+          {this.state.toBeShowVideo && (this.state.toBeShowVideo = false)}
         </div>
         <p className={styles.title}>{this.props.frame.title}</p>
       </li>
