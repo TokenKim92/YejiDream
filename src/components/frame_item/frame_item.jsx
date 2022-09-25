@@ -25,14 +25,15 @@ class FrameItem extends PureComponent {
     this.#containerRef.current.style.top = `${this.#rect.y}px`;
 
     this.#frameRef.current.addEventListener('pointerdown', (event) => {
-      this.props.onFrameClick(this.props.frame);
+      this.props.onFrameClick(this);
       event.stopPropagation();
-
-      setTimeout(() => {
-        const toBeShowVideo = true;
-        this.setState({ toBeShowVideo });
-      }, 1200);
     });
+  }
+
+  setShowVideoTimer() {
+    setTimeout(() => {
+      this.setState({ toBeShowVideo: true });
+    }, 1500);
   }
 
   get #className() {
@@ -92,26 +93,27 @@ class FrameItem extends PureComponent {
   }
 
   render() {
+    const contentsTag = !this.state.toBeShowVideo ? (
+      <></>
+    ) : (
+      <iframe
+        className={styles.iframe}
+        type='text/html'
+        src={`https://www.youtube.com/embed/${this.props.frame.id}?autoplay=1&mute=1`}
+        frameBorder='0'
+        allowFullScreen
+      />
+    );
+    this.state.toBeShowVideo && (this.state.toBeShowVideo = false);
+
     return (
       <li
-        className={this.#className}
         ref={this.#containerRef}
+        className={this.#className}
         style={this.#style}>
-        <div className={styles.frame} ref={this.#frameRef}>
+        <div ref={this.#frameRef} className={styles.frame}>
           <img src={this.props.frame.url} className={styles.content} />
-          {this.props.displayType !== 'detail' ? (
-            <></>
-          ) : (
-            <iframe
-              className={styles.iframe}
-              style={{ opacity: this.state.toBeShowVideo ? 1 : 0 }}
-              type='text/html'
-              src={`https://www.youtube.com/embed/${this.props.frame.id}?autoplay=1&loop=1`}
-              frameBorder='0'
-              allowFullScreen
-            />
-          )}
-          {this.state.toBeShowVideo && (this.state.toBeShowVideo = false)}
+          {contentsTag}
         </div>
         <p className={styles.title}>{this.props.frame.title}</p>
       </li>

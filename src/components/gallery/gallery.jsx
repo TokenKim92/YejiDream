@@ -35,6 +35,7 @@ class Gallery extends Component {
     this.state = {
       frames: this.#initFrames(),
       selectedFrame: undefined,
+      selectedFrameItem: undefined,
     };
 
     this.#lastFrameRect = this.state.frames[this.state.frames.length - 1].rect;
@@ -100,7 +101,8 @@ class Gallery extends Component {
     if (this.state.selectedFrame) {
       const state = {
         ...this.state,
-        selectedFrame: null,
+        selectedFrame: undefined,
+        selectedFrameItem: undefined,
       };
       this.setState(state);
 
@@ -197,6 +199,7 @@ class Gallery extends Component {
     }
 
     if (this.state.selectedFrame === frame) {
+      this.state.selectedFrameItem.setShowVideoTimer();
       return 'detail';
     }
 
@@ -207,10 +210,11 @@ class Gallery extends Component {
     }
   }
 
-  selectFrame = (frame) => {
+  selectFrame = (frameItem) => {
     const state = {
       ...this.state,
-      selectedFrame: frame,
+      selectedFrame: frameItem.props.frame,
+      selectedFrameItem: frameItem,
     };
     this.setState(state);
 
