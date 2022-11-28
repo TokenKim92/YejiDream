@@ -71,7 +71,7 @@ class Gallery extends Component {
   }
 
   #calculateRect(aspectRatio, index) {
-    const minWidth = this.#stageSize.w / 7;
+    const minWidth = 200;
     const width = Math.round(Math.random() * minWidth * 0.7) + minWidth;
     const height = Math.round(width * aspectRatio);
     const horizontalInterval = 300;
