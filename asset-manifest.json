@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/YejiDream/static/css/main.2f7f94ab.css",
-    "main.js": "/YejiDream/static/js/main.3f7d6ba1.js",
+    "main.js": "/YejiDream/static/js/main.3748483d.js",
     "static/media/sheep.png": "/YejiDream/static/media/sheep.0f83581d10d1b5f4d856.png",
     "index.html": "/YejiDream/index.html",
     "main.2f7f94ab.css.map": "/YejiDream/static/css/main.2f7f94ab.css.map",
-    "main.3f7d6ba1.js.map": "/YejiDream/static/js/main.3f7d6ba1.js.map"
+    "main.3748483d.js.map": "/YejiDream/static/js/main.3748483d.js.map"
   },
   "entrypoints": [
     "static/css/main.2f7f94ab.css",
-    "static/js/main.3f7d6ba1.js"
+    "static/js/main.3748483d.js"
   ]
 }
